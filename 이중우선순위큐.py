@@ -12,7 +12,8 @@ def solution(operations):
         elif(b=="-1"):
             heapq.heappop(q)
         else:
-            q.pop()
+            heapq._heapify_max(q)
+            heapq.heappop(q)
         print(q)
     if not q:
         answer=[0,0]
