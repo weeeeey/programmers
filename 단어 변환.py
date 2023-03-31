@@ -1,34 +1,40 @@
 from collections import deque
 
-dx = [0,1]
-dy = [1,0]
-INF = int(1e5)
-def solution(m, n, puddles): # m은 가로, n이 세로
-    answer = 0
-    visited =[ [INF]*(m+1) for i in range(n+1)]
-    for ip in puddles:
-        a,b=ip
-        visited[b][a]=-1
+def solution(begin, target, words):
+    if(target not in words):
+        return 0
+    words=[begin]+words
+    end = words.index(target)
+    n = len(words)
+    k=len(begin)
+    visited=[False]*n
+    gr = [[]for i in range(n)]
+    for i in range(n):
+        cur = words[i]
+        for j in range(i+1,n):
+            next = words[j]
+            dif = 0
+            for z in range(k):
+                if cur[z]!=next[z]:
+                    dif+=1
+                if dif>=2:
+                    break
+            if dif==1:
+                gr[i].append(j)
+                gr[j].append(i)
+    
     q=deque()
-    q.append((1,1))
-    visited[1][1]=0
+    q.append((0,0))
+    visited[0]=True
     while(q):
-        x,y = q.popleft()
-        for i in range(2):
-            nx = x+dx[i]
-            ny = y+dy[i]
-            if(nx>n or ny>m):
+        cur,cnt = q.popleft()
+        for next in gr[cur]:
+            if visited[next]==True:
                 continue
-            if(visited[nx][ny]==-1):
-                continue
-            if(visited[nx][ny]<visited[x][y]+1):
-                continue
-            if(nx==n and ny==m):
-                answer+=1
-                visited[nx][ny]=visited[x][y]+1
-                continue
-            visited[nx][ny]=visited[x][y]+1
-            q.appendleft((nx,ny))
-    return answer
+            if next==end:
+                return cnt+1
+            visited[next]=True
+            q.appendleft((next,cnt+1))
+    return 0
 
-print(solution(4,3,[[2,2]]))
+print(solution("hit","cog",["hot", "dot", "dog", "lot", "log", "cog"]))
