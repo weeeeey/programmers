@@ -13,8 +13,10 @@ def solution(gens, plays):
         A,B = plays[a],plays[b]
 
         g[idx][0]+=play
-        if play<=B or play==A:
+        if play<=B:
             continue
+        elif play==A:
+            g[idx][1:]=[a,i]
         elif play>A:
             g[idx][1:]=[i,a]
         else:
