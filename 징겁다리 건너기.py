@@ -1,21 +1,25 @@
-INF = 2*int(1e9)
-
-def solution(stones, k):
-    answer = INF
-    n = len(stones)
-    if(n==k):
-        return max(stones)
-    for i in range(k):
-        dp = [INF]*n
-        while(True):
-            num = max(stones[i:i+k])
-            if(n-i<=k):
-                answer = min(min(dp),answer)
-                break
+def solution(s, k):
+    answer = 0
+    start = 0
+    end = max(s)
+    while(start<=end):
+        mid = (start+end)//2
+        cnt = 0
+        for temp in s:
+            if temp<=mid:
+                cnt+=1
             else:
-                dp[i:i+k]=[num]*(k)
-                i+=k
-    return answer
+                cnt=0
+            if cnt>=k:    
+                end=mid-1    
+                break
+        
+        if cnt<k:
+            start=mid+1
+            
+        
+
+    return start
 
 
 # k개로 묶여진 묶음을 찾고 그 묶음 중의 최댓값이 가장 작은 값을 찾기 
