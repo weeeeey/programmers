@@ -26,16 +26,16 @@ def solution(   en,     ref,    sel,            amount):
             parent=tree[parent]
             profit[parent]+=money
             money=int(money*0.1)
-            if(money<0 or parent=="center"):
+            if(money<=0 or parent=="center"):
                 break
     for i in range(n):
         answer[i]=profit[en[i]]
     return answer
 
-print(solution(["john", "mary", "edward", "sam", "emily", "jaimie", "tod", "young"],
-                ["-",     "-",   "mary", "edward", "mary", "mary", "jaimie", "edward"],
-                ["young", "john", "tod", "emily", "mary"],
-                [12, 4, 2, 5, 10]))
-
-["john", "mary", "edward", "sam", "emily", "jaimie", "tod", "young"]
-[360,     958,      108,     0,     450,     18,      180,   1080]
+# print(solution(["john", "mary", "edward", "sam", "emily", "jaimie", "tod", "young"],
+                # ["-",     "-",   "mary", "edward", "mary", "mary", "jaimie", "edward"],
+                # ["young", "john", "tod", "emily", "mary"],
+                # [12, 4, 2, 5, 10]))
+# 
+# ["john", "mary", "edward", "sam", "emily", "jaimie", "tod", "young"]
+# [360,     958,      108,     0,     450,     18,      180,   1080]
