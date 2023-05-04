@@ -25,14 +25,13 @@ def solution(n, pivot, cmd):
                     pivot
         else:
             dic, move  = c.split(" ")
-            if dic=="D":
-                pivot+=int(move)
-                if pivot>=len(arr):
-                    pivot=len(arr)-1
-            else:
-                pivot-=int(move)
-                if pivot<=0:
-                    pivot=1
+            d,move = 1,int(move)
+            if dic == "U":
+                d = -1
+                move *= (-1)
+                
+            
+                
     print(arr)
 
     
