@@ -6,39 +6,62 @@
 # n <= 1,000
 def solution(n, pivot, cmd):
     answer = ''
-    arr = [i for i in range(n)]
-    delete = [True]*n
-    garbage = []    
+    gr = dict()
+    for i in range(n):
+        gr[i] = [i-1,i+1]
+    gr[0][0]="False"
+    gr[n-1][1]="False"
+    
+    garbage = []
     for c in cmd:
         if len(c)==1:
             if c == "Z":
-                num = garbage.pop()
+                key,left,right = garbage.pop()
+                gr[key]=[left,right]
+                if left=="False":
+                    gr[right][0]=key
+                elif right=="False":
+                    gr[left][1]=key
+                else:
+                    gr[left][1]=key
+                    gr[right][0]=key
                 
             else:
-                tri = False
-                for i in range(pivot+1,n):
-                    if delete[i]==True:
-                        pivot=i
-                        tri = True
-                        break
-                if tri == False:
-                    pivot
+                left,right = gr[pivot]
+                if left=="False":
+                    gr[right][0]="False"
+                    del gr[pivot]
+                    garbage.append([pivot,left,right])
+                    pivot=right
+                elif right=="False":
+                    gr[left][1]="False"
+                    del gr[pivot]
+                    garbage.append([pivot,left,right])
+                    pivot=left
+                else:
+                    gr[left][1]=right
+                    gr[right][0]=left
+                    del gr[pivot]
+                    garbage.append([pivot,left,right])
+                    pivot=right
+                    
         else:
             dic, move  = c.split(" ")
-            d,move = 1,int(move)
-            if dic == "U":
-                d = -1
-                move *= (-1)
+            move = int(move)
+            if dic=="D":
+                for i in range(move):
+                    pivot=gr[pivot][1]
+            else:
+                for i in range(move):
+                    pivot=gr[pivot][0]
                 
-            
-                
-    print(arr)
-
-    
-        
+    answer=["X"]*n
+    for k in gr:
+        answer[k]="O"
+    answer= "".join(answer)
     return answer
 
 print(solution(8,
                 2,
-                ["D 2","C","U 3","C","D 4","C","U 2","Z","Z","U 1","C"]))
+                ["D 2","C","U 3","C","D 4","C","U 2","Z","Z"]))
 # ["D 2","C","U 3","C","D 4","C","U 2","Z","Z"]))
