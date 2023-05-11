@@ -1,7 +1,30 @@
 def solution(scores):
-    answer = 0
-    scores.sort(key=lambda x:(x[0],x[1]))
-    print(scores)
+    n = len(scores)
+    wx,wy=scores[0]
+    w = wx+wy
+    scores.sort(key=lambda x:(-x[0],x[1]))    
+    px = scores[0][0]
+    py = scores[0][1]
+    answer=1
+    for i in range(n):
+        x,y = scores[i]
+        if x>wx and y>wy:
+            return -1
+        if x+y<=w:
+            continue
+        if x==px:
+            answer+=1
+            py = y
+        else:
+            if py>y:
+                continue
+            else:
+                py = y
+                px = x
+                answer+=1
+
+            
+
     return answer
 
 print(solution([[2,2],[1,4],[3,2],[3,2],[2,1]]))
