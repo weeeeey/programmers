@@ -7,15 +7,13 @@ d = ['u', 'r', 'l', 'd']
 
 def solution(n, m, sx, sy, ex, ey, k):
     answer = []
-    
-    visited = [[[[] for z in range(k+1)] for i in range(m+1) ] for j in range(n+1)]
     q = []
-    heapq.heappush(q,(0,0,sx,sy))
-    
+    gr = [[0]*(m+1) for i in range(n+1)]
+    heapq.heappush(q,(0,0,sx,sy,[]))
     while(q):
-        dist, cnt, x, y = heapq.heappop(q)
+        dist, cnt, x, y,dir = heapq.heappop(q)
         if cnt==k and [x,y]==[ex,ey]:
-            answer=visited[x][y][cnt]
+            answer=dir
             break
         if cnt+abs(ex-x)+abs(ey-y)>k:
             continue
@@ -25,10 +23,10 @@ def solution(n, m, sx, sy, ex, ey, k):
             cd = d[i]
             if nx<=0 or ny<=0 or nx>n or ny>m:
                 continue
-            if visited[nx][ny][cnt+1]!=[]:
+            if dist-i-1>gr[nx][ny]:
                 continue
-            visited[nx][ny][cnt+1]=visited[x][y][cnt]+[cd]
-            heapq.heappush(q,(dist-i,cnt+1,nx,ny))
+            gr[nx][ny]=dist-i-1
+            heapq.heappush(q,(dist-i-1,cnt+1,nx,ny,dir+[cd]))
     
 
     return "".join(answer) if answer else "impossible"
