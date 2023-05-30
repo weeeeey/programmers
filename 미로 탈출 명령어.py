@@ -1,9 +1,9 @@
 import heapq
 
-dx = [1,0,0,-1]
+dx = [-1,0,0,1]
 dy = [0,-1,1,0]
-# 하 좌 우 상
-d = ['d', 'l', 'r', 'u']
+dy = [0,1,-1,0]
+d = ['u', 'r', 'l', 'd']
 
 def solution(n, m, sx, sy, ex, ey, k):
     answer = []
@@ -28,7 +28,7 @@ def solution(n, m, sx, sy, ex, ey, k):
             if visited[nx][ny][cnt+1]!=[]:
                 continue
             visited[nx][ny][cnt+1]=visited[x][y][cnt]+[cd]
-            heapq.heappush(q,(dist+i+1,cnt+1,nx,ny))
+            heapq.heappush(q,(dist-i,cnt+1,nx,ny))
     
 
     return "".join(answer) if answer else "impossible"

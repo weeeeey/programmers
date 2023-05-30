@@ -1,15 +1,15 @@
-def find_parent(parents,unit):
-    if parents[unit]==unit:
-        return unit
-    else:
-        return find_parent(parents,parents[unit])
+def find_parent():
+    return 0
 
 def solution(commands):
     answer = []
     gr = [[[] for i in range(51)] for j in range(51)]
-    mer = [[[] for i in range(51)] for j in range(51)]
-    
+    mer = [[[0] for i in range(51)] for j in range(51)]
+    mer_num = [[] for j in range(51)]
+    num=1
     voc = dict() # voca는 일반 딕셔너리
+    
+    
     for c in commands:
         temp = c.split(" ")
         cc = temp[0]
@@ -19,12 +19,37 @@ def solution(commands):
                 
                 
             else:
-                arr = voc[temp[1]]
+                print(temp[1])
                 
                 
         elif cc=="MERGE":
             sx,sy,ex,ey = map(int,temp[1:])
+            le = 0
+            if mer[sx][sy]==0 and mer[ex][ey]==0:
+                mer[sx][sy]=num
+                mer[ex][ey]=num
+                mer_num.append([sx,sy])
+                mer_num.append([ex,ey])
+                num+=1
+            elif mer[sx][sy]!=0 and mer[ex][ey]!=0:
+                t= mer[sx][sy]
+                for i in range(le):
+                    x,y = mer_num[t][i]
+                    mer[x][y]=t
+                    mer_num[t].append([x,y])
+            else:
+                t = mer[sx][sy] if mer[sx][sy] else mer[ex][ey]
+                le = len(mer_num[t])                
+                for i in range(le):
+                    x,y = mer_num[t][i]
+                    mer[x][y]=t
+                    mer_num[t].append([x,y])
+            if gr[sx][sy]!=[]:
+                gr[ex][ey]=gr[sx][sy]
+            elif gr[ex][ey]!=[]:
+                gr[sx][sy]=gr[ex][ey]
             
+
         elif cc=="PRINT":
             answer.append(gr[int(temp[1])][int(temp[2])])
         else:
