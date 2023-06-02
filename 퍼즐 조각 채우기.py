@@ -3,11 +3,11 @@ from copy import deepcopy
 
 # x,y = -1,2
 # nx = y
-# ny = -x
+# ny = -x  시계 방향으로 90도 회전 시 각 좌표의 변화
 dx = [-1,1,0,0]
 dy = [0,0,-1,1]
 
-def find_peace(gb):
+def find_peace(gb):	#게임 보드에서 0으로 이뤄진 각 도형들의 좌표 모음을 찾아서 리턴
     n = len(gb)
     peace = []
     for i in range(n):
@@ -37,7 +37,7 @@ def solution(gb, table):
     n = len(gb)
     num = [[[0,0] for j in range(n)] for i in range(n)]
     temp = deepcopy(table)
-    temp_num=1
+    temp_num=1	# num이라는 그래프에 [도형 크기, 고유 번호] 를 입력하기 위한 과정
     for i in range(n):
         for j in range(n):
             if temp[i][j]==1:
@@ -61,7 +61,7 @@ def solution(gb, table):
                 temp_num+=1
 
     complete = []
-    for p in peace:
+    for p in peace:	# 게임보드의 각 조각 탐색
         m = len(p)
         asd = False
         for i in range(n):
@@ -101,6 +101,3 @@ print(solution(
     [[1,1,0,0,1,0],[0,0,1,0,1,0],[0,1,1,0,0,1],[1,1,0,1,1,1],[1,0,0,0,1,0],[0,1,1,1,0,0]]	
 ,[[1,0,0,1,1,0],[1,0,1,0,1,0],[0,1,1,0,1,1],[0,0,1,0,0,0],[1,1,0,1,1,0],[0,1,0,0,0,0]]
 ))
-
-
-
