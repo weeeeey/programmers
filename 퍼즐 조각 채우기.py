@@ -35,8 +35,9 @@ def solution(gb, table):
     answer = 0
     peace= find_peace(gb)
     n = len(gb)
-    num = [[0]*n for i in range(n)]
+    num = [[[0,0] for j in range(n)] for i in range(n)]
     temp = deepcopy(table)
+    temp_num=1
     for i in range(n):
         for j in range(n):
             if temp[i][j]==1:
@@ -56,15 +57,44 @@ def solution(gb, table):
                             temp[nx][ny]=0
                             q.append((nx,ny))
                 for x,y in t:
-                    num[x][y]=m
-    
+                    num[x][y]=[m,temp_num]
+                temp_num+=1
+
+    complete = []
     for p in peace:
         m = len(p)
+        asd = False
         for i in range(n):
+            if asd:
+                continue                
             for j in range(n):
-                if num[i][j]!=m:
+                if asd:
+                    continue                
+                if num[i][j][1] in complete:
                     continue
-                
+                if num[i][j][0]!=m:
+                    continue
+                NUM_T = num[i][j][1]
+                pea = deepcopy(p)
+                rot=0
+                while(rot<=3):
+                    tri = True
+                    for x,y in pea:
+                        nx = x + i
+                        ny = y + j
+                        if nx<0 or nx>=n or ny<0 or ny>=n or num[nx][ny][1]!=NUM_T:
+                            tri = False
+                            break
+                    if tri:
+                        complete.append(NUM_T)
+                        asd=True
+                        answer+=m
+                        break
+                    else:
+                        rot+=1
+                        for ri in range(m):
+                            pea[ri][0],pea[ri][1] = pea[ri][1],-pea[ri][0]
+        
     return answer
 
 print(solution(
