@@ -20,6 +20,7 @@ def dist_num():
             dist[t][t]=1
             while(q):
                 cnt,x,y = q.popleft()
+                cur = cell[x][y]
                 for k in range(8):
                     nx = x + dx[k]
                     ny = y + dy[k]
@@ -37,32 +38,32 @@ def dist_num():
     
 
 def solution(numbers):
-    answer = 0
+    INF = int(1e9)
+    answer = INF
     numbers = list(map(int,numbers))
     n=len(numbers)
-    
-    m = n if n%2==0 else n-1
-    d = dist_num()
     q = []
-    heapq.heappush(q,(0,4,6,0))
+    d = dist_num()
+    distant = [[INF,INF] for i in range(n)]
+    distant[0][0]=d[4][numbers[0]]
+    distant[0][1]=d[6][numbers[0]]
+    heapq.heappush(q,(d[4][numbers[0]],numbers[0],6,1))
+    heapq.heappush(q,(d[6][numbers[0]],4,numbers[0],1))
     while(q):
-        dist,left,right,num = heapq.heappop(q)
-        if num==m:
-            answer=-dist
-            continue
-        a,b = numbers[num],numbers[num+1]
-        one = d[left][a] + d[a][b]
-        heapq.heappush(q,(dist-one,b,right,num+2))
-        two = d[left][a] + d[right][b]
-        heapq.heappush(q,(dist-two,a,b,num+2))
-        three = d[right][a] + d[left][b]
-        heapq.heappush(q,(dist-three,b,a,num+2))
-        four = d[right][a] + d[a][b]
-        heapq.heappush(q,(dist-four,left,b,num+2))
-    if n!=m:
-        a = answer+d[left][numbers[-1]]
-        b = answer+ d[right][numbers[-1]]
-        answer=min(a,b)
-    return answer
+        dist,left,right,cur = heapq.heappop(q)
+        if cur==n:
+            return dist
+        num = numbers[cur]
+        l = dist+d[left][num]
+        r = dist+d[right][num]
+        
+        if distant[cur][0]>l:
+            heapq.heappush(q,(l,num,right,cur+1))
+            distant[cur][0]=l
+            
+        if distant[cur][1]>r:
+            heapq.heappush(q,(r,left,num,cur+1))
+            distant[cur][1]=r
+
 
 print(solution("1756"))
