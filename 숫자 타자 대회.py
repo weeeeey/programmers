@@ -1,5 +1,5 @@
-import heapq
 from collections import deque
+import heapq
 
 def dist_num():
     dx = [0,0,-1,1,1,1,-1,-1]
@@ -42,28 +42,31 @@ def solution(numbers):
     answer = INF
     numbers = list(map(int,numbers))
     n=len(numbers)
+    d=dist_num()
+    distant = [[[INF]*10 for i in range(10)] for j in range(n+1)]
+    distant[0][4][6] = 0
     q = []
-    d = dist_num()
-    distant = [[INF,INF] for i in range(n)]
-    distant[0][0]=d[4][numbers[0]]
-    distant[0][1]=d[6][numbers[0]]
-    heapq.heappush(q,(d[4][numbers[0]],numbers[0],6,1))
-    heapq.heappush(q,(d[6][numbers[0]],4,numbers[0],1))
+    heapq.heappush(q,(0,0,4,6))
     while(q):
-        dist,left,right,cur = heapq.heappop(q)
-        if cur==n:
-            return dist
-        num = numbers[cur]
-        l = dist+d[left][num]
-        r = dist+d[right][num]
-        
-        if distant[cur][0]>l:
-            heapq.heappush(q,(l,num,right,cur+1))
-            distant[cur][0]=l
-            
-        if distant[cur][1]>r:
-            heapq.heappush(q,(r,left,num,cur+1))
-            distant[cur][1]=r
+        w, next, left, right = heapq.heappop(q)
+        if next == n:
+            return w
+        num = numbers[next]
 
+        if num in [left,right]:
+            if distant[next+1][left][right]>w+1:
+                distant[next+1][left][right]=w+1
+                heapq.heappush(q,(w+1,next+1,left,right))
+                
+        else:
+            if  distant[next+1][num][right]>w+d[left][num]:
+                distant[next+1][num][right]=w+d[left][num]
+                heapq.heappush(q,(w+d[left][num],next+1,num,right))
+            if  distant[next+1][left][num]>w+d[right][num]:
+                distant[next+1][left][num]=w+d[right][num]
+                heapq.heappush(q,(w+d[right][num],next+1,left,num))
+
+    return answer
+            
 
 print(solution("1756"))
