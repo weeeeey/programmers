@@ -28,10 +28,9 @@ def solution(rec, chx, chy, ix, iy):
         q.append((gr[chx][chy][0],chx,chy,-1,gr[chx][chy][0]))
     else:
         for cur in gr[chx][chy]:
-            other=[]
             for a in gr[chx][chy]:
                 if a!=cur:
-                    other.append(a)
+                    other=a
             for i in range(4):
                 ccx=chx+dx[i]
                 ccy=chy+dy[i]
@@ -39,12 +38,21 @@ def solution(rec, chx, chy, ix, iy):
                     continue
                 if gr[ccx][ccy]==[]:
                     continue
-                if gr[ccx][ccy]==cur:
-                    temp = True
-                    for o in other:
-                        if inner[ccx][ccy][o]==True:
-                            temp=False
-                            break
+                if inner[ccx][ccy][other]==True:
+                    continue
+
+                if len(gr[ccx][ccy])==1 and gr[ccx][ccy][0]==cur:
+                    q.append((cur,ccx,ccy,-1,cur))
+                    visited[ccx][ccy]=1
+                
+                if len(gr[ccx][ccy])>=2:
+                    for j in gr[ccx][ccy]:
+                        if j==cur:
+                            continue
+                        q.append((j,ccx,ccy,1,cur))
+                        visited[ccx][ccy]=1
+
+                
                 
 
     while(q):
@@ -91,5 +99,5 @@ def solution(rec, chx, chy, ix, iy):
             
     return answer
 
-print(solution([[1,1,7,4],[3,2,5,5],[4,3,6,9],[2,6,8,8]],1,3,7,8))
+print(solution([[1,1,7,4],[3,2,5,5],[4,3,6,9],[2,6,8,8]],3,4,7,8))
 
