@@ -52,9 +52,6 @@ def solution(rec, chx, chy, ix, iy):
                         q.append((j,ccx,ccy,1,cur))
                         visited[ccx][ccy]=1
 
-                
-                
-
     while(q):
         cur, x,y,dot,pre = q.popleft()
         # print("cur:",cur,"   x:",x,"  y:",y,"  dot:",dot,"   pre: ",pre)
@@ -99,5 +96,7 @@ def solution(rec, chx, chy, ix, iy):
             
     return answer
 
-print(solution([[1,1,7,4],[3,2,5,5],[4,3,6,9],[2,6,8,8]],3,4,7,8))
+print(solution([[1,1,7,4],[3,2,5,5],[4,3,6,9],[2,6,8,8]],7,6,7,8))
 
+
+    
