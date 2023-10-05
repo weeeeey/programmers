@@ -1,25 +1,85 @@
-const find_rectri = (gr, x, y) => {
-    const n = gr.length;
-    const m = gr[0].length;
-    const dx = [-1, 0, 1]; // 위, 오른쪽, 왼쪽 방향
-    const dy = [0, 1, -1];
+const rotateMatrix = (matrix, rotateNum = 1) => {
+    let N = matrix.length;
+    let M = matrix[0] && matrix[0].length;
 
-    const isInside = (nx, ny) => nx >= 0 && nx < n && ny >= 0 && ny < m;
+    rotateNum = rotateNum % 4;
+    if (rotateNum === 0) {
+        return matrix;
+    }
 
-    const dfs = (nx, ny) => {
-        gr[nx][ny] = 0; // 방문한 곳은 0으로 표시
-        for (let d = 0; d < 3; d++) {
-            const nx2 = nx + dx[d];
-            const ny2 = ny + dy[d];
-            if (isInside(nx2, ny2) && gr[nx2][ny2] === 1) {
-                dfs(nx2, ny2);
+    let result = [];
+    let rotateCount = rotateNum % 2 === 1 ? [M, N] : [N, M];
+
+    for (let row = 0; row < rotateCount[0]; row++) {
+        result[row] = [];
+        for (let col = 0; col < rotateCount[1]; col++) {
+            if (rotateNum === 1) {
+                result[row][col] = matrix[N - col - 1][row];
+            } else if (rotateNum === 2) {
+                result[row][col] = matrix[N - row - 1][M - col - 1];
+            } else result[row][col] = matrix[col][M - row - 1];
+        }
+    }
+    return result;
+};
+const find_rectri = (gr, topX, topY) => {
+    let temp = Object.assign([], gr);
+    let width = 2;
+    let bool = true;
+    // while (true) {
+    //     let compareTemp;
+    //     if (temp[topX][topY] === 0) {
+    //         compareTemp = Array(width).fill(0);
+    //     } else {
+    //         compareTemp = Array(width).fill(1);
+    //     }
+    //     if (topY === 0) {
+    //         compareTemp.push(0);
+    //     } else {
+    //         compareTemp.push(0);
+    //         compareTemp.unshift(0);
+    //     }
+    //     if (
+    //         Object.is(
+    //             temp[topX].substring(topY - 1, topY + compareTemp.length),
+    //             compareTemp
+    //         )
+    //     ) {
+    //         console.log('saa');
+    //     } else {
+    //         bool = false;
+    //         break;
+    //     }
+    // }
+    console.log(temp[topX]);
+
+    return temp;
+};
+const find_mirror = (gr, topX, topY) => {
+    return;
+};
+function solution(graph) {
+    let answer = 0;
+
+    for (let k = 0; k < 4; k++) {
+        let gr = rotateMatrix(graph, k);
+        const n = gr.length;
+        const m = gr[0].length;
+        for (let i = 0; i < n; i++) {
+            for (let j = 0; j < m; j++) {
+                console.log(gr[i][j]);
+                // if (gr[i][j] === 1) {
+                //     if (gr[i][j + 1] !== 1) {
+                //         gr = find_rectri(gr, i, j);
+                //         gr = find_mirror(gr, i, j);
+                //     }
+                // }
             }
         }
-    };
+    }
 
-    dfs(x, y); // DFS 시작
-    return gr; // 변경된 그래프 반환
-};
+    return answer;
+}
 
 // 테스트
 const graph = [
