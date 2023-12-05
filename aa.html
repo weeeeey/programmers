@@ -1,96 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>공동 텍스트 편집기</title>
-        <style>
-            /* CSS 스타일링을 추가하세요. */
-        </style>
-    </head>
+<html>
     <body>
-        <div id="nickname-layer">
-            <h2>닉네임 입력</h2>
-            <input type="text" id="nickname-input" placeholder="닉네임" />
-            <button id="join-button">참가하기</button>
-        </div>
-
-        <div id="editor">
-            <div id="editor-content" contenteditable="true"></div>
-            <div id="user-list">
-                <h3>참여자 목록</h3>
-                <ul id="users"></ul>
-            </div>
-        </div>
-
-        <script>
-            // JavaScript 코드를 추가하세요.
-            const nicknameLayer = document.getElementById('nickname-layer');
-            const nicknameInput = document.getElementById('nickname-input');
-            const joinButton = document.getElementById('join-button');
-            const editorContent = document.getElementById('editor-content');
-            const userList = document.getElementById('users');
-
-            let nickname = '';
-            let users = [];
-
-            // 로컬 스토리지에서 편집 내용을 불러옵니다.
-            if (localStorage.getItem('editorContent')) {
-                editorContent.innerHTML = localStorage.getItem('editorContent');
+        <script src="https://unpkg.com/react@16.3.2/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@16.3.2/umd/react-dom.production.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"
+            charset="utf-8"
+        ></script>
+        <script type="text/babel">
+            function Greeter(props) {
+                return <div>Hello ${props}</div>;
             }
 
-            // 텍스트 입력 커서 위치를 추적하기 위한 함수
-            function getCaretPosition() {
-                const sel = window.getSelection();
-                if (sel.rangeCount > 0) {
-                    const range = sel.getRangeAt(0);
-                    const preCaretRange = range.cloneRange();
-                    preCaretRange.selectNodeContents(editorContent);
-                    preCaretRange.setEnd(range.endContainer, range.endOffset);
-                    return preCaretRange.toString().length;
+            class App extends React.Component {
+                render() {
+                    return <Greeter user="Admin" />;
                 }
-                return 0;
             }
 
-            // 로컬 스토리지에서 닉네임을 가져옵니다.
-            if (localStorage.getItem('nickname')) {
-                nickname = localStorage.getItem('nickname');
-                nicknameLayer.style.display = 'none';
-                editorContent.focus();
-            } else {
-                joinButton.addEventListener('click', () => {
-                    nickname = nicknameInput.value;
-                    if (nickname) {
-                        localStorage.setItem('nickname', nickname);
-                        nicknameLayer.style.display = 'none';
-                        editorContent.focus();
-                    }
-                });
-            }
-
-            // 텍스트 편집 내용을 로컬 스토리지에 저장합니다.
-            editorContent.addEventListener('input', () => {
-                const content = editorContent.innerHTML;
-                localStorage.setItem('editorContent', content);
-                // 여기서 다른 사용자와 커서 위치를 공유할 수 있습니다.
-                // getCaretPosition() 함수를 사용하여 커서 위치를 가져올 수 있습니다.
-            });
-
-            // 참여자 목록을 업데이트하는 함수
-            function updateUsers() {
-                userList.innerHTML = '';
-                users.forEach((user) => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = user;
-                    userList.appendChild(listItem);
-                });
-            }
-
-            // 다른 사용자가 추가될 때 메시지를 받고 참여자 목록을 업데이트합니다.
-            // 이 부분은 WebSocket 또는 다른 통신 방법을 사용하여 구현해야 합니다.
-
-            // 초기화
-            updateUsers();
+            const rootElement = document.getElementById('root');
+            ReactDOM.render(<App />, rootElement);
         </script>
+        <div id="root"></div>
     </body>
 </html>
